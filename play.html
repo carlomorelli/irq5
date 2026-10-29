@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050705" />
+    <title>Play — IRQ5</title>
+  </head>
+  <body class="play-page">
+    <div class="crt" aria-hidden="true"></div>
+    <header class="play-header">
+      <a class="back-link" href="./"><span aria-hidden="true">←</span> IRQ5</a>
+      <div class="play-heading">
+        <h1 id="game-title">Loading…</h1>
+        <p id="game-meta" class="play-meta"></p>
+      </div>
+    </header>
+    <main class="player-shell">
+      <div id="dos" class="dos-host" aria-label="DOS emulator"></div>
+      <div id="start-overlay" class="start-overlay">
+        <div class="start-panel">
+          <p class="start-kicker">Ready to boot</p>
+          <button id="start-button" class="start-button" type="button" disabled>
+            Loading player…
+          </button>
+          <p class="start-hint">
+            Sound and keyboard need a click. To keep progress, save in-game, then
+            press the diskette button in the player.
+          </p>
+        </div>
+      </div>
+      <div id="error-box" class="error-box" hidden>
+        <h2 id="error-title">Game not found</h2>
+        <p id="error-message"></p>
+        <a class="start-button" href="./">Back to catalog</a>
+      </div>
+    </main>
+    <script type="module" src="/src/play.ts"></script>
+  </body>
+</html>

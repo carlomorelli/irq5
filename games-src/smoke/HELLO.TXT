@@ -1,0 +1,4 @@
+If you can read this inside the browser, the bundle, DOSBox,
+Sound Blaster IRQ 5 and js-dos are wired up correctly.
+
+Keyboard and audio unlock after the first click.

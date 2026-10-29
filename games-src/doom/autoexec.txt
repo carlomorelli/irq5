@@ -1,0 +1,1 @@
+DOOM.EXE -config IRQ5.CFG

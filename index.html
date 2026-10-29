@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#050705" />
+    <meta
+      name="description"
+      content="Play shareware DOS classics in your browser. No installs, no accounts."
+    />
+    <title>IRQ5 — DOS games in your browser</title>
+  </head>
+  <body>
+    <div class="crt" aria-hidden="true"></div>
+    <header class="site-header">
+      <a class="brand" href="./" aria-label="IRQ5 home">IRQ<span>5</span></a>
+      <p class="tagline">DOS games, running in your browser.</p>
+    </header>
+    <main class="page">
+      <section class="hero">
+        <p class="eyebrow">Boot sector / 001</p>
+        <h1>Pick a game.<br /><em>Press play.</em></h1>
+        <p class="lede">
+          Shareware classics, emulated locally with DOSBox. Your save data stays
+          in this browser.
+        </p>
+      </section>
+      <section class="catalog" aria-labelledby="catalog-title">
+        <div class="section-head">
+          <h2 id="catalog-title">Catalog</h2>
+          <span id="game-count" class="count"></span>
+        </div>
+        <div id="games" class="game-grid"></div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <p>Shareware only. Saves live in your browser profile.</p>
+      <p>
+        Built with
+        <a href="https://js-dos.com/" target="_blank" rel="noreferrer">js-dos</a>.
+      </p>
+    </footer>
+    <noscript>
+      <p class="noscript">This site needs JavaScript to run the DOS emulator.</p>
+    </noscript>
+    <script type="module" src="/src/home.ts"></script>
+  </body>
+</html>

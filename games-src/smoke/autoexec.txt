@@ -1,0 +1,8 @@
+cls
+echo.
+echo   IRQ5 SYSTEM CHECK
+echo   -----------------
+echo.
+type HELLO.TXT
+echo.
+echo   js-dos booted successfully.
