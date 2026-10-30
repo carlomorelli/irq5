@@ -55,6 +55,7 @@ streaming.
     Adding tests or strengthening assertions is allowed.
 
 ## 11. Commits
+
 - NEVER commit changes unless the user explicitly asks you to. It is VERY IMPORTANT to only commit when explicitly asked, otherwise the user will feel that you are being too proactive.
 
 ## Adding a game
