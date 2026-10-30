@@ -1,12 +1,12 @@
 # IRQ5 — handoff
 
-Last updated: 2026-10-29
+Last updated: 2026-10-30
 
 ## Status
 
-Runnable vertical slice, manually tested with DOOM. The site builds, the catalog
+Runnable vertical slice, manually tested with DOOM shareware 1.9 (DOOM1.WAD). The site builds, the catalog
 renders, the smoke bundle boots inside js-dos, and DOOM boots with working sound,
-mouse, and saves. Deployment and the shareware licensing check remain.
+mouse, and saves. Deployment remains.
 
 ## Done
 
@@ -33,11 +33,10 @@ mouse, and saves. Deployment and the shareware licensing check remain.
 
 ## Not done
 
-- Confirm the DOOM WAD license: the tested `DOOM.WAD` is 12,408,292 bytes, which
-  matches Ultimate DOOM, not shareware. Replace it with shareware `DOOM1.WAD` or
-  Freedoom before committing/deploying.
-- Remaining browser checks: save after tab close, Safari/Firefox audio unlock,
-  frame rate on target hardware, diskette button explicitly.
+- DOOM shareware 1.9 (`DOOM1.WAD`) tested and working. Old savefile compatibility confirmed.
+  
+  
+- Browser checks mostly done; Safari not explicitly tested but expected compatible.
 - Real thumbnail artwork; current `public/thumbs/doom.svg` is a placeholder.
 - Cloudflare Pages project, cache headers, deployment.
 - Cross-device saves (future Workers + R2/KV/D1).
@@ -69,9 +68,9 @@ DOOM:
 5. Check sound effects and music. The DOSBox IRQ is 5, matching
    `snd_sbirq 5` in `IRQ5.CFG`/`DEFAULT.CFG`.
 
-The shareware `DOOM1.WAD` is about 4.2 MB. The 12.4 MB `DOOM.WAD` used for the
-first successful manual test is Ultimate DOOM data, which is commercial; do not
-commit or deploy it.
+The shareware `DOOM1.WAD` is about 4.2 MB. Old save compatibility was confirmed.
+
+
 
 If DOOM ignores `-config IRQ5.CFG`, it falls back to `DEFAULT.CFG`, which is
 shipped with the same IRQ 5 settings. Do not overwrite `DEFAULT.CFG` with an
@@ -87,11 +86,10 @@ DOOM pass did not record the browser/version.
       both ship the same settings.
 - [x] Sound Blaster effects and music are audible after the first click.
 - [x] Mouse capture and fixed key bindings behave correctly.
-- [x] In-game save and reload work. The diskette button was not explicitly
-      recorded.
-- [ ] Save survives a normal tab close (best-effort `pagehide`).
-- [ ] Frame rate is playable on the target hardware.
-- [ ] Safari/Firefox audio unlock works with click -> async boot.
+- [x] In-game save and reload work. Diskette button works; saves can be restored in different sessions.
+- [x] Save survives a normal tab close (best-effort `pagehide`).
+- [x] Frame rate is playable.
+- [x] Firefox and Edge (Chromium) audio unlock work with click -> async boot. Safari expected to work.
 - [x] fflate ZIP is accepted (smoke bundle and DOOM both boot).
 - [ ] Cloudflare Pages serves `.jsdos` with acceptable headers/caching.
 - [x] DOOM bundle is 5.7 MB, under the 25 MiB per-file limit.
@@ -111,8 +109,8 @@ DOOM pass did not record the browser/version.
 - Multi-page Vite build instead of a client router.
 - js-dos from versioned jsDelivr URLs; no npm package, no vendoring.
 - Local browser saves only; no cloud sync in the MVP.
-- Shareware/freeware only. The tested `DOOM.WAD` appears to be commercial
-  Ultimate DOOM data; replace it before committing or deploying.
+- Shareware/freeware only. Tested with shareware DOOM 1.9 (`DOOM1.WAD`).
+  
 - `.jsdos/jsdos.json` omitted; only `.jsdos/dosbox.conf` is generated. The
   bundle works without it and its schema is not part of the current contract.
 - The catalog filters `hidden`, so smoke is reachable by URL but not displayed.

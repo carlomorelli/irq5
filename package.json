@@ -11,7 +11,9 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "deploy": "pnpm run build && wrangler pages deploy dist --project-name=irq5",
+    "deploy:login": "wrangler login"
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
@@ -21,6 +23,7 @@
     "prettier": "^3.3.3",
     "typescript": "~5.6.3",
     "typescript-eslint": "^8.14.0",
-    "vite": "^8.3.5"
+    "vite": "^8.3.5",
+    "wrangler": "^3.90.0"
   }
 }
