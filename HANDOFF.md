@@ -4,26 +4,23 @@ Last updated: 2026-10-30
 
 ## Status
 
-Runnable vertical slice, manually tested with DOOM shareware 1.9 (DOOM1.WAD). The site builds, the catalog
-renders, the smoke bundle boots inside js-dos, and DOOM boots with working sound,
-mouse, and saves. Deployment remains.
+Runnable vertical slice with DOOM, Prince of Persia, Wolfenstein 3D, and Street Fighter II. All bundles build, catalog renders, smoke test boots. DOOM tested with shareware 1.9 (DOOM1.WAD) with sound, mouse, and saves working. Deployment remains.
 
 ## Done
 
 - Vite + vanilla TypeScript multi-page app (`index.html`, `play.html`).
 - CRT/amber/green visual theme, responsive catalog, player shell.
-- Catalog in `src/games.ts`: DOOM (public) and System Check (hidden smoke test).
+- Catalog in `src/games.ts`: DOOM, Prince of Persia, Wolfenstein 3D, Street Fighter II (public), and System Check (hidden smoke test).
 - js-dos 8.5.3 loaded from jsDelivr, version pinned in `jsdos.config.json`.
 - Bundle pipeline with `fflate`: required-file check, generated
   `.jsdos/dosbox.conf`, `[autoexec]` with `mount c .` / `c:`, ZIP output to
-  `public/games/<slug>.jsdos`.
-- `games-src/doom/`: `IRQ5.CFG`, `DEFAULT.CFG`, `autoexec.txt`,
-  `required-files.txt`, plus user-supplied `DOOM.EXE` and `DOOM.WAD`. The bundle
-  builds to ~5.7 MB.
-- `games-src/smoke/`: hidden system-check bundle.
+  `public/games/<slug>.jsdos`. OPFS bundle cache cleared before each boot; saves preserved.
+- Game sources in `games-src/` for all catalog titles; bundles generated to `public/games/`.
 - Manual DOOM test passed: boots, sound effects/music, mouse, and saves.
 - Play flow: slug lookup, HEAD preflight, click-to-start, `autoStart`,
   `autoSave`, `fsChanges.local`, `setNoCloud(true)`, save on page hide.
+- Custom thumbnails for all games.
+- Cloudflare Pages headers (`public/_headers`) for caching `.jsdos`, thumbs, and assets.
 - `npm run typecheck` and `npm run build` pass.
 - Smoke bundle verified in headless Edge: start button enabled, click created
   one canvas inside `#dos`, overlay hidden, no app-level console errors. Expected
@@ -37,8 +34,7 @@ mouse, and saves. Deployment remains.
   
   
 - Browser checks mostly done; Safari not explicitly tested but expected compatible.
-- Real thumbnail artwork; current `public/thumbs/doom.svg` is a placeholder.
-- Cloudflare Pages project, cache headers, deployment.
+- Cloudflare Pages project/deployment (headers added).
 - Cross-device saves (future Workers + R2/KV/D1).
 - More games.
 
@@ -97,10 +93,9 @@ DOOM pass did not record the browser/version.
 ## Phases
 
 - Phase 0 — scaffold, tooling, config: done.
-- Phase 1 — vertical slice: done; smoke and DOOM both boot, DOOM sound/mouse/
-  saves verified manually.
-- Phase 2 — polish: real thumbnails, error states, mobile layout, metadata: open.
-- Phase 3 — deploy: Cloudflare Pages, headers, cache policy: open.
+- Phase 1 — vertical slice: done; smoke, DOOM, Prince of Persia, Wolfenstein 3D, Street Fighter II all boot.
+- Phase 2 — polish: thumbnails added, error states present; mobile layout/metadata could be refined: mostly done.
+- Phase 3 — deploy: Cloudflare Pages headers added; project/deployment pending: open.
 - Phase 4 — sync: accounts + remote saves (Workers/R2/KV/D1): open.
 
 ## Decisions
@@ -109,6 +104,9 @@ DOOM pass did not record the browser/version.
 - Multi-page Vite build instead of a client router.
 - js-dos from versioned jsDelivr URLs; no npm package, no vendoring.
 - Local browser saves only; no cloud sync in the MVP.
+- Bundle freshness: `src/play.ts` deletes js-dos's OPFS bundle cache entry
+  (`jsdos/caches/bundles/<url-key>`) before each boot. Every boot re-downloads
+  the bundle; saves (`jsdos/saves/<url-key>.changes`) are preserved.
 - Shareware/freeware only. Tested with shareware DOOM 1.9 (`DOOM1.WAD`).
   
 - `.jsdos/jsdos.json` omitted; only `.jsdos/dosbox.conf` is generated. The
@@ -144,5 +142,9 @@ public/thumbs/doom.svg  placeholder thumbnail
   `snd_sbirq 5`; check the in-game sound settings.
 - **Saves vanish** — bundle path changed, private browsing, or browser storage
   eviction. Same `/games/<slug>.jsdos` URL is required.
+- **Old bundle content / files missing in `dir`** — js-dos caches bundles in
+  OPFS by URL and does not revalidate them. The player clears only the bundle
+  cache before each boot, so this should self-heal on reload. If a bundle is
+  loaded outside `play.ts`, clear site data for the origin.
 - **Bundle too large** — Cloudflare Pages rejects files over 25 MiB. Check the
   build warning before deploying.

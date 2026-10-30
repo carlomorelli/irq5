@@ -12,6 +12,13 @@ const errorMessage = must<HTMLParagraphElement>('#error-message');
 const titleEl = must<HTMLHeadingElement>('#game-title');
 const metaEl = must<HTMLParagraphElement>('#game-meta');
 
+/**
+ * js-dos's OPFS root directory. Pinned explicitly so the cache and save
+ * locations are deterministic (js-dos defaults to this same name, so existing
+ * saves keep working).
+ */
+const JSDOS_OPFS_ROOT = 'jsdos';
+
 const game = getGame(new URLSearchParams(window.location.search).get('game'));
 
 if (!game) {
@@ -59,6 +66,11 @@ async function setup(selected: Game): Promise<void> {
     return;
   }
 
+  // Force js-dos to fetch the current bundle instead of reusing a stale OPFS
+  // copy. Done before enabling the button so the click handler below can stay
+  // synchronous, which keeps the first-gesture audio/keyboard unlock intact.
+  await clearCachedBundle(selected.bundle);
+
   startButton.disabled = false;
   startButton.textContent = 'Click to start';
 
@@ -78,6 +90,7 @@ async function setup(selected: Game): Promise<void> {
       dos = window.Dos(dosHost, {
         url: selected.bundle,
         pathPrefix: JSDOS_PATH_PREFIX,
+        opfsRoot: JSDOS_OPFS_ROOT,
         theme: 'retro',
         autoStart: true,
         autoSave: true,
@@ -124,6 +137,46 @@ async function bundleExists(url: string): Promise<boolean> {
   }
   const type = response.headers.get('content-type') ?? '';
   return !type.includes('text/html');
+}
+
+/**
+ * Reproduces js-dos 8.5.3's OPFS cache-key transform so we can address the
+ * cached bundle entry it would otherwise reuse.
+ *
+ * Keep this in sync with the pinned js-dos version (`jsdos.config.json`).
+ */
+function bundleCacheKey(url: string): string {
+  return url
+    .replace(/^https?:\/\//, '')
+    .replace(/[^a-zA-Z0-9._-]/g, '_')
+    .substring(0, 200);
+}
+
+/**
+ * Deletes the cached `.jsdos` bundle for `url` from OPFS.
+ *
+ * js-dos caches bundles under `<opfsRoot>/caches/bundles/<key>` and never
+ * revalidates them, so a redeployed bundle at the same URL would otherwise
+ * stay stale. Only the bundle entry is removed; saves live separately under
+ * `<opfsRoot>/saves/<key>.changes` and are left untouched.
+ *
+ * Best-effort: a missing entry or unsupported OPFS is ignored, and any other
+ * failure is logged without blocking the boot.
+ */
+async function clearCachedBundle(url: string): Promise<void> {
+  try {
+    const root = await navigator.storage.getDirectory();
+    const jsdos = await root.getDirectoryHandle(JSDOS_OPFS_ROOT);
+    const caches = await jsdos.getDirectoryHandle('caches');
+    const bundles = await caches.getDirectoryHandle('bundles');
+    await bundles.removeEntry(bundleCacheKey(url));
+    console.debug('[irq5] cleared cached bundle', url);
+  } catch (error) {
+    if (error instanceof DOMException && error.name === 'NotFoundError') {
+      return;
+    }
+    console.warn('[irq5] could not clear cached bundle', error);
+  }
 }
 
 function showError(title: string, message: string): void {

@@ -83,7 +83,7 @@ for (const slug of folders) {
   const conf = [
     dosboxTemplate,
     '',
-    '[autoexec]',
+    //'[autoexec]', THIS IS ALREADY ADDED IN THE BASE dosbox.conf
     'echo off',
     'mount c .',
     'c:',

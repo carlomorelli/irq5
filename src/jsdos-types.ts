@@ -2,6 +2,7 @@ export interface DosOptions {
   url?: string;
   pathPrefix?: string;
   pathSuffix?: string;
+  opfsRoot?: string;
   theme?: string;
   autoStart?: boolean;
   autoSave?: boolean;

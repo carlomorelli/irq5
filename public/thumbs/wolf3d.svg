@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Wolfenstein 3D">
+  <defs>
+    <radialGradient id="heat" cx="50%" cy="40%" r="70%">
+      <stop offset="0" stop-color="#1a0f00"/>
+      <stop offset="1" stop-color="#050403"/>
+    </radialGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="7" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="640" height="480" fill="url(#heat)"/>
+  <g fill="none" stroke="#ff6b2b" stroke-width="2" opacity=".45">
+    <path d="M40 40h560v400H40z"/>
+    <path d="M40 120h560M40 240h560M40 360h560M200 40v400M440 40v400"/>
+  </g>
+  <text x="320" y="230" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="68" font-weight="700" letter-spacing="8" fill="#ff6b2b" filter="url(#glow)">WOLFENSTEIN</text>
+  <text x="320" y="290" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="62" font-weight="700" letter-spacing="20" fill="#ffd93b">3D</text>
+  <text x="320" y="350" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="16" letter-spacing="8" fill="#b8a090">ID SOFTWARE</text>
+</svg>

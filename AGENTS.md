@@ -41,6 +41,10 @@ streaming.
    publishing. The current DOOM test WAD is not shareware (see HANDOFF.md).
 4. **Stable bundle URLs.** Saves are keyed by the bundle URL. Do not rename
    `/games/<slug>.jsdos` or move it to a different path without a migration.
+   `src/play.ts` deletes js-dos's OPFS bundle cache entry
+   (`jsdos/caches/bundles/<url-key>`) before each boot so redeployed bundles
+   are always fetched. It must never delete the save entry
+   (`jsdos/saves/<url-key>.changes`).
 5. **Save model.** Local to the browser (js-dos/OPFS). `autoSave: true` plus
    best-effort `save()` on `pagehide`/`visibilitychange`. No cross-device sync.
 6. **First gesture matters.** Create `Dos` inside the click handler on the
@@ -75,6 +79,12 @@ It prints a system check without needing game binaries.
 ## Known quirks
 
 - js-dos logs `Changes not found ...` on a first boot. That is normal.
+- js-dos caches each `.jsdos` bundle in OPFS (`jsdos/caches/bundles/<key>`) and
+  never revalidates it. `src/play.ts` clears only that entry before boot, so
+  every boot re-downloads the bundle; saves under `jsdos/saves/` survive. The
+  cache-key transform mirrors js-dos 8.5.3; re-check it if the pinned version
+  changes. Loading a bundle outside the player may reuse a stale copy until
+  site data is cleared.
 - Headless browsers may log `Can't create audio node with sampleRate === 0`.
   Audio needs a real browser/gesture.
 - Vite can serve `.jsdos` without a `Content-Type`; the preflight only rejects

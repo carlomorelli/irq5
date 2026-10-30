@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 480" role="img" aria-label="Prince of Persia">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1a120b"/>
+      <stop offset="1" stop-color="#0b0906"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="640" height="480" fill="url(#bg)"/>
+  <g stroke="#d4a574" opacity=".25">
+    <line x1="0" y1="240" x2="640" y2="240"/>
+    <line x1="320" y1="0" x2="320" y2="480"/>
+  </g>
+  <text x="320" y="230" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="72" font-weight="700" letter-spacing="6" fill="#d4a574" filter="url(#glow)">PRINCE</text>
+  <text x="320" y="290" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="42" letter-spacing="10" fill="#f5d16e">PERSIA</text>
+  <text x="320" y="340" text-anchor="middle" font-family="Consolas, 'Courier New', monospace" font-size="16" letter-spacing="6" fill="#b8946a">BRODERBUND</text>
+</svg>
